@@ -39,6 +39,15 @@ def connect_db() :
 def disconnect_db(err = None) :
     DBSingelton.getInstance().close()
 
+@app.route('/')
+def course_level():
+    uncompleted = UserCourses.select().where(UserCourses.completion_rate < 100)
+    for user in uncompleted:
+        course = Courses.select(course_title).join(UserCourses).where(UserCourses.course_id = Courses.course_id)
+        status = UserCourses.completion_rate
+        the_user = MyUser.select(username).join(UserCourses).where(UserCourses.user_id = MyUser.user_id)
+        message = "Dear {}, you have reached {} in your course {}. Log in to continue".format(the_user,status,course)
+
 @app.route('/sms', methods=['POST'])
 def sms():
     number = request.form['From']
@@ -51,14 +60,6 @@ def sms():
 def add_jobs():
     add.cron('0 0 12 * * ?', 'add-one-two', 1, 2)
 
-@app.route('/')
-def course_level():
-    # completed = []
-    # uncompleted = []
-    # for user_id in UserCourses:
-    #     if completion_rate < 100:
-    #         uncompleted.append(user_id)
-    #     else:
-    #         completed.append(user_id)
-  
+
+
 

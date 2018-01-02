@@ -1,4 +1,4 @@
-from models.BaseModel import *
+from BaseModel import *
 from peewee import PostgresqlDatabase, Model, CharField, DateTimeField, IntegerField
 
 class MyUser(BaseModel):
