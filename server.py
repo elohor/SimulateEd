@@ -8,6 +8,7 @@ from models.MyUser import MyUser
 from models.UserCourses import UserCourses
 from twilio import twiml
 from flask_rq2 import RQ
+from datetime import date
 
 
 app = Flask(__name__)
@@ -41,12 +42,20 @@ def disconnect_db(err = None) :
 
 @app.route('/')
 def course_level():
-    uncompleted = UserCourses.select().where(UserCourses.completion_rate < 100)
-    for user in uncompleted:
-        course = Courses.select(course_title).join(UserCourses).where(UserCourses.course_id = Courses.course_id)
-        status = UserCourses.completion_rate
-        the_user = MyUser.select(username).join(UserCourses).where(UserCourses.user_id = MyUser.user_id)
-        message = "Dear {}, you have reached {} in your course {}. Log in to continue".format(the_user,status,course)
+    current_date = datetime.datetime.now
+    timeline_day = Timeline.date_started - current_date
+    todays_task = DailyTasks.select(resources_link).join(Timeline)where(DailyTasks.task_id = Timeline.task_id and timeline_day = DailyTasks.day_number)
+    the_user = MyUser.select(username).join(Timeline).where(MyUser.user_id = Timeline.user_id)
+    message = "Dear {}, your task for today is {}. Log in to continue".format(the_user,todays_task)
+
+
+
+    # uncompleted = UserCourses.select().where(UserCourses.completion_rate < 100)
+    # for user in uncompleted:
+    #     course = Courses.select(course_title).join(UserCourses).where(UserCourses.course_id = Courses.course_id)
+    #     status = UserCourses.completion_rate
+    #     the_user = MyUser.select(username).join(UserCourses).where(UserCourses.user_id = MyUser.user_id)
+    #     message = "Dear {}, you have reached {} in your course {}. Log in to continue".format(the_user,status,course)
 
 @app.route('/sms', methods=['POST'])
 def sms():

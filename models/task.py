@@ -1,5 +1,6 @@
 from BaseModel import *
 from peewee import PostgresqlDatabase, Model, CharField, DateTimeField, IntegerField
+from datetime import date
 
 class DailyTasks(BaseModel):
     task_id = PrimaryKeyField

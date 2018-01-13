@@ -11,7 +11,7 @@ class MyUser(BaseModel):
     course = CharField(100)
     date_started = DateTimeField(default=datetime.datetime.now)
 
-    active_users = MyUser.select(username).join(DailyTasks).where(MyUser.user_id = DailyTasks.user_id and Timeline.date_started = NOT NULL)
+    # active_users = MyUser.select(username).join(DailyTasks).where(MyUser.user_id = DailyTasks.user_id and Timeline.date_started = NOT NULL)
         
 
 

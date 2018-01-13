@@ -1,7 +1,9 @@
 from BaseModel import *
 from peewee import PostgresqlDatabase, Model, CharField, DateTimeField, IntegerField
+from datetime import date
 import MyUser
 import Courses
+import DailyTasks
 
 class Timeline(BaseModel):
     timeline_id = PrimaryKeyField
@@ -12,9 +14,8 @@ class Timeline(BaseModel):
 
     current_date = datetime.datetime.now
     timeline_day = date_started - current_date
+    
 
-    if timeline_day == day_number:
-        
 
 if __name__ == '__main__':
     UserCourses.create_table(fail_silently=True)
