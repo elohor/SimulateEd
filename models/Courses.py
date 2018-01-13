@@ -3,7 +3,7 @@ from peewee import PostgresqlDatabase, Model, CharField, DateTimeField, IntegerF
 
 class Courses(BaseModel):
     course_id = PrimaryKeyField
-    resources = CharField(50)
+    task_id = IntegerField(50)
     course_title = CharField(70)
     course_description = CharField
 
